@@ -30,3 +30,22 @@
 *.exe
 *.out
 *.app
+
+# Custom
+.DS_store
+.DS_Store?
+*.sh
+
+# VS code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
