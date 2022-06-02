@@ -15,6 +15,7 @@
 /* components */
 
 /* systems */
+#include "ecs/systems/raytrace_system.cpp"
 
 // make sure to add framerate timer to include folder
 #include <simple_framerate_timer.cpp>
@@ -49,13 +50,14 @@ int main(int argc, const char * argv[]) {
 
 
     /* Register Systems */
+    auto ray_trace_system = control.RegisterSystem<pce::RayTraceSystem>();
 
     
     /* Create Entities */
     
 
-
-
+    ray_trace_system->Init();
+    
     simple_framerate_timer simple_timer = simple_framerate_timer();
 
     /*----------Main Loop---------------------*/
@@ -79,6 +81,7 @@ int main(int argc, const char * argv[]) {
 
 
         /*~~~~~~~~~-------------- Draw and Render --------------------*/
+        ray_trace_system->TraceAllPixels();
         // draw_system->UpdateEntities();
         simulation->render();
 
