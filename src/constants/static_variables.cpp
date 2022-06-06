@@ -16,6 +16,12 @@ const double meter_to_pixel_ratio = 0.5/8.4;
 const double screen_height_meters = double(screen_y) * meter_to_pixel_ratio;
 const double screen_width_meters = double(screen_x) * meter_to_pixel_ratio;
 
+const double screen_zoom_ratio = 1.0;
+const double distance_camera_to_viewplane = 1.0;
+
+const double movement_speed = 5.0;
+const double hop_angle = 1.0;
+
 }
 
 

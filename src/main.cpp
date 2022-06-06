@@ -13,11 +13,17 @@
 #include "ecs/ControlPanel.cpp"
 
 /* components */
+#include "ecs/components/location_component.cpp"
+#include "ecs/components/rotated_location_component.cpp"
+#include "ecs/components/sphere_body_component.cpp"
 
 /* systems */
-#include "ecs/systems/raytrace_system.cpp"
+#include "ecs/systems/RayTraceSystem.cpp"
 
-// make sure to add framerate timer to include folder
+/* factories */
+#include "ecs/entity_factories/SphereObjectFactory.cpp"
+
+/* other */
 #include <simple_framerate_timer.cpp>
 
 
@@ -47,16 +53,21 @@ int main(int argc, const char * argv[]) {
     control.Init();
 
     /* Register Components */
-
+    control.RegisterComponent<pce::Location>();
+    control.RegisterComponent<pce::RotatedLocation>();
+    control.RegisterComponent<pce::SphereBody>();
 
     /* Register Systems */
     auto ray_trace_system = control.RegisterSystem<pce::RayTraceSystem>();
-
+    Signature ray_trace_sig;
+    ray_trace_sig.set(control.GetComponentType<pce::Location>());
+    ray_trace_sig.set(control.GetComponentType<pce::RotatedLocation>());
+    control.SetSystemSignature<pce::RayTraceSystem>(ray_trace_sig);
     
-    /* Create Entities */
-    
+    /* Create Factories */
+    auto sphere_object_factory = SphereObjectFactory();
+    sphere_object_factory.MakeObject();
 
-    ray_trace_system->Init();
     
     simple_framerate_timer simple_timer = simple_framerate_timer();
 
@@ -81,8 +92,6 @@ int main(int argc, const char * argv[]) {
 
 
         /*~~~~~~~~~-------------- Draw and Render --------------------*/
-        ray_trace_system->TraceAllPixels();
-        // draw_system->UpdateEntities();
         simulation->render();
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

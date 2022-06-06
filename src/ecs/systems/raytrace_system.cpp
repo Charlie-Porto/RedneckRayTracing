@@ -9,6 +9,8 @@ class for performing ray tracing
 #include <vector>
 #include <unordered_map>
 
+#include "subsystems/CameraOperatorSubsystem.cpp"
+
 #include <glm/vec3.hpp>
 #include <ezprint.cpp>
 #include <virtual_keyboard.cpp>
@@ -29,7 +31,6 @@ public:
   RayTraceSystem() { ezp::print_item("creating Ray Trace System"); }
   void Init() {
     ezp::print_item("initializing Ray Trace System");
-    camera_position_ = glm::dvec3(0.0, 0.0, 10.0);
   }
 
 
@@ -58,8 +59,7 @@ public:
   }
 
 private:
-  glm::dvec3 camera_position_; 
-  VirtualKeyboard keyboard_;
+  CameraOperatorSubsystem camera_operator_;
    
 };
 }

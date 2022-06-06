@@ -3,7 +3,8 @@
 
 /*----------------------------------------------------------------|
 --------------------- Module Description -------------------------|
-function that finds the point(s) where a LineVec3 intersects a sphere
+function that finds the point (closest to
+a point on a LineVec3) where that LineVec3 intersects a sphere
 -----------------------------------------------------------------*/
 #include <stdexcept>
 #include <cmath>
@@ -32,7 +33,7 @@ glm::dvec3 calculateClosestPointLineIntersectsSphere(
   double b = 2.0 * dot(line.direction, (o_less_c));
   double c = dot(o_less_c, o_less_c) - pow(sphere_radius, 2.0);
   double discriminant = pow(b, 2.0) - 4 * a * c; 
-  ezp::print_labeled_item("discriminant: ", discriminant);
+  // ezp::print_labeled_item("discriminant: ", discriminant);
   
   if (discriminant < 0) {
     throw std::domain_error("Line does not intersect Sphere at any point (discriminant < 0)");
@@ -43,7 +44,7 @@ glm::dvec3 calculateClosestPointLineIntersectsSphere(
   const double closest_intersection_distance = std::min(distance_a, distance_b);
   const glm::dvec3 travel_vector = closest_intersection_distance * line.direction;
   const glm::dvec3 intersection_point = line.origin + travel_vector;
-  vezp::print_dvec3(intersection_point);
+  // vezp::print_dvec3(intersection_point);
   return intersection_point;
 }
 
