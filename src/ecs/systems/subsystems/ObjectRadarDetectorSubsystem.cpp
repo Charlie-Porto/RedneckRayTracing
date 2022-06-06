@@ -28,6 +28,8 @@ Const inputs:
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
+#include <ezprint.cpp>
+
 #include "objectRadarDetectorFunctions.cpp"
 
 extern ControlPanel control;
@@ -35,8 +37,18 @@ extern ControlPanel control;
 namespace pce {
 class ObjectRadarDetectorSubsystem {
 public:
+  ObjectRadarDetectorSubsystem() { ezp::print_item("creating ObjectRadarDetectionSubsystem"); }
+
+  void PrintRadarMapContents() {
+    ezp::print_item("PRINTING ALL OBJECT RADAR LOCATIONS");
+    for (auto const& [key, value] : radar_map_) {
+      ezp::print_labeled_item("object radar x:", value.x);
+      ezp::print_labeled_item("object radar y:", value.y);
+    }
+  }
 
   void UpdateRadar(const std::set<uint32_t>& entities, const Camera& camera) {
+    // ezp::print_item("RadarSystem: updating radar");
     radar_map_.clear();
     for (auto const& entity : entities) {
       auto const& location = control.GetComponent<pce::Location>(entity);
@@ -46,15 +58,14 @@ public:
                                                                               camera.rotation_versor);
       
       const glm::dvec2 radar_position = pce::radar::calculateObjectLocationOnRadar(
-                                            location.position,
+                                            rotated_location.rotated_position,
                                             true, // temporary
                                             camera.pov_scalar);
       radar_map_[entity] = radar_position;
     }
   }        
      
-private:
-  std::unordered_map<uint32_t, glm::dvec2> radar_map_;
+  std::unordered_map<uint32_t, glm::dvec2> radar_map_; // public so easily pass-able
            
              
 };

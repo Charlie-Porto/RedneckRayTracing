@@ -77,27 +77,27 @@ JoystickReport pollVirtualKeyboard(VirtualKeyboard& keyboard) {
 void updateCameraPosition(Camera& camera, VirtualKeyboard& keyboard) {
   JoystickReport joystick_report = pollVirtualKeyboard(keyboard);
   if (joystick_report.R_pressed == true) { 
-    // ezp::print_item("JOYSTICK: RIGHT");
+    ezp::print_item("JOYSTICK: RIGHT");
     updateCameraXZAngle(camera, 1.0);
   }
   if (joystick_report.L_pressed == true) {
-    // ezp::print_item("JOYSTICK: LEFT");
+    ezp::print_item("JOYSTICK: LEFT");
     updateCameraXZAngle(camera, -1.0);
   }
   if (joystick_report.Up_pressed == true) {
-    // ezp::print_item("JOYSTICK: UP");
+    ezp::print_item("JOYSTICK: UP");
     updateCameraYAngle(camera, 1.0);
   }
   if (joystick_report.Down_pressed == true) {
-    // ezp::print_item("JOYSTICK: DOWN");
+    ezp::print_item("JOYSTICK: DOWN");
     updateCameraYAngle(camera, -1.0);
   }
   if (joystick_report.W_pressed == true) {
-    // ezp::print_item("JOYSTICK: W");
+    ezp::print_item("JOYSTICK: W");
     updateCameraPositionScalar(camera, -1.0);
   }
   if (joystick_report.S_pressed == true) {
-    // ezp::print_item("JOYSTICK: S");
+    ezp::print_item("JOYSTICK: S");
     updateCameraPositionScalar(camera, 1.0);
   }
 }

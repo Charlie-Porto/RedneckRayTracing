@@ -14,9 +14,10 @@ public:
   SphereObjectFactory() { ezp::print_item("creating SphereObjectFactory"); }
 
   void MakeObject() {
+    ezp::print_item("making object");
     Entity object = control.CreateEntity();
     control.AddComponent(object, pce::Location{
-      .position = glm::dvec3(0, 0, 0)
+      .position = glm::dvec3(3.0, 1.0, -1.0)
     });
     control.AddComponent(object, pce::RotatedLocation{});
     control.AddComponent(object, pce::SphereBody{.radius = 2});

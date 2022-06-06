@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/ext/quaternion_double.hpp>
 
@@ -26,6 +27,11 @@ void print_dvec3(glm::dvec3 v) {
   ezp::print_labeled_item("x: ", v.x);
   ezp::print_labeled_item("y: ", v.y);
   ezp::print_labeled_item("z: ", v.z);
+}
+
+void print_dvec2(glm::dvec2 v) {
+  ezp::print_labeled_item("x: ", v.x);
+  ezp::print_labeled_item("y: ", v.y);
 }
 
 }

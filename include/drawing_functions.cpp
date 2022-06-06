@@ -105,7 +105,7 @@ std::vector<std::vector<int>> getCircleRasterizationPoints(int xc, int yc, int r
         }
         
         std::vector<std::vector<int>> new_points = getCircleOctet(xc, yc, x, y);
-        points_list = append_vect(points_list, new_points);
+        points_list.insert(points_list.end(), new_points.begin(), new_points.end());
     }
 
     return points_list;
@@ -116,6 +116,12 @@ void drawCircle(int xc, int yc, int r, std::vector<int> color, SDL_Renderer* ren
   drawPixelList(points, color, renderer);
 }
 
+
+void calculateAndDrawCirclePoints(const int& xc, const int& yc, const int& r, 
+                                  const std::vector<int>& color, SDL_Renderer* renderer) {
+  
+
+}
 
 
  std::vector<std::vector<int>> getFilledCirclePoints (int rad, int xc, int yc, std::vector<int> color, SDL_Renderer* renderer) // just get points

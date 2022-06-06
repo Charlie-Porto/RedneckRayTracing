@@ -63,6 +63,8 @@ int main(int argc, const char * argv[]) {
     ray_trace_sig.set(control.GetComponentType<pce::Location>());
     ray_trace_sig.set(control.GetComponentType<pce::RotatedLocation>());
     control.SetSystemSignature<pce::RayTraceSystem>(ray_trace_sig);
+
+    ray_trace_system->Init();
     
     /* Create Factories */
     auto sphere_object_factory = SphereObjectFactory();
@@ -89,6 +91,8 @@ int main(int argc, const char * argv[]) {
 
         /*~~~~~~~~~------------- Do Stuff and Update ----------------*/
         double ticks = (SDL_GetTicks()/1000.0);
+        ray_trace_system->SetupRayTrace();
+        ray_trace_system->RayTrace();
 
 
         /*~~~~~~~~~-------------- Draw and Render --------------------*/
