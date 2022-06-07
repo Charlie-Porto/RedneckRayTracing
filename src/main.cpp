@@ -46,10 +46,9 @@ int main(int argc, const char * argv[]) {
     std::cout << "SDL Simulation successfully initialized." << std::endl;
 
     /* set randomness seed */
-    // set_srand();
+    set_srand();
 
     /* Ordinary Setup items */
-    // TODO: move control to separate file? 
     control.Init();
 
     /* Register Components */
@@ -68,7 +67,9 @@ int main(int argc, const char * argv[]) {
     
     /* Create Factories */
     auto sphere_object_factory = SphereObjectFactory();
-    sphere_object_factory.MakeObject();
+    for (int i = 0; i < 10; ++i) {
+      sphere_object_factory.MakeObject();
+    }
 
     
     simple_framerate_timer simple_timer = simple_framerate_timer();

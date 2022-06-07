@@ -27,7 +27,7 @@ const std::vector<int> mcolor = {5, 140, 15, 255};
 
 void drawCircleAtVec2(glm::dvec2 point) {
   const glm::vec2 sdl_transform = ConvertCartesianCoordinatesToSDL(point);
-  drawCircle(sdl_transform.x, sdl_transform.y, 10, mcolor, Simulation::renderer);
+  drawCircle(sdl_transform.x, sdl_transform.y, 2, mcolor, Simulation::renderer);
 }
 
 }
