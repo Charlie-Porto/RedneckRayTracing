@@ -5,7 +5,7 @@
 --------------------- Module Description -------------------------|
 class for monitoring the general positions of on-screen objects
 (purpose of this class is to reduce computation needed for raytracing
-by obtaining a general idea of where specifically on the screen tracing 
+by obtaining a general idea of where on the screen tracing 
 needs to happen in order to correctly render all objects, instead of 
 tracing every pixel on the screen by way of brute-force.
 
@@ -22,6 +22,7 @@ Const inputs:
  * double global::screen zoom 
  * double distance from camera to viewplane (traditionally just 1)
 -----------------------------------------------------------------*/
+#include <vector>
 #include <set>
 #include <unordered_map>
 
@@ -57,23 +58,20 @@ public:
                                                location.position,
                                                camera.location_vec3,
                                                camera.pov_scalar);
-
       if (if_object_in_radar_view == true) {
         rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(location.position,
                                                                                 camera.rotation_versor);
-        
-        const glm::dvec2 radar_position = pce::radar::calculateObjectLocationOnRadar(
+        const glm::dvec2 radar = pce::radar::calculateObjectLocationOnRadar(
                                               rotated_location.rotated_position,
-                                              true, // temporary
+                                              if_object_in_radar_view,
                                               camera.pov_scalar);
-        radar_map_[entity] = radar_position;
+        radar_map_[entity] = radar;
       }
     }
   }        
      
-  std::unordered_map<uint32_t, glm::dvec2> radar_map_; // public so easily pass-able
-           
-             
+  std::unordered_map<uint32_t, glm::vec2> radar_map_; // public so easily pass-able to Tracer Subsystem
+ 
 };
 }
 

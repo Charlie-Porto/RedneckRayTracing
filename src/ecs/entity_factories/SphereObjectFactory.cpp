@@ -1,3 +1,4 @@
+
 #ifndef SphereObjectFactory_cpp
 #define SphereObjectFactory_cpp
 
@@ -16,8 +17,8 @@ const double min_x = 0.0;
 const double max_x = 90.0;
 const double min_y = 0.0;
 const double max_y = 90.0;
-const double min_r = 2.0;
-const double max_r = 10.0;
+const double min_r = 5.0;
+const double max_r = 20.0;
 
 
 class SphereObjectFactory {
@@ -39,11 +40,25 @@ public:
     return rand_radius;
   }
 
+  void MakeTestObject() {
+    ezp::print_item("making object");
+    const double new_object_radius = 10.0;
+    glm::dvec3 new_object_location = glm::dvec3(2, 2, -2);
+    Entity object = control.CreateEntity();
+    control.AddComponent(object, pce::Location{
+      .position = new_object_location
+    });
+    control.AddComponent(object, pce::RotatedLocation{});
+    control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    objects_.push_back(object);
+  }
 
   void MakeObject() {
     ezp::print_item("making object");
     const double new_object_radius = GetRandomRadius();
+    // const double new_object_radius = 10.0;
     glm::dvec3 new_object_location = GetRandomLocation();
+    // glm::dvec3 new_object_location = glm::dvec3(2, 2, -2);
     Entity object = control.CreateEntity();
     control.AddComponent(object, pce::Location{
       .position = new_object_location

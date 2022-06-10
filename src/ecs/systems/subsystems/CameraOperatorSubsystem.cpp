@@ -17,10 +17,10 @@ namespace pce {
 class CameraOperatorSubsystem {
 public:
   void Init() {
-    camera_.location_vec3 = glm::dvec3(0.0, 0.0, 10.0);
+    camera_.location_vec3 = glm::dvec3(0.0, 0.0, 200.0);
     camera_.xz_angle = 0.0;
     camera_.y_angle = 0.0;
-    camera_.pov_scalar = 10.0;
+    camera_.pov_scalar = 200.0;
     camera_.xz_circle_radius = camera_.pov_scalar;
     camera_.rotation_versor = glm::dquat(1.0, 0.0, 0.0, 0.0);
     // camera_.focus_distance = 30.0; 

@@ -66,7 +66,7 @@ glm::dvec2 calculateObjectLocationOnRadar(const glm::dvec3& rotated_pos,
                                                            camera_pos, rotated_pos);
   auto view_plane = pce::math_objs::Plane{.x=0.0, .y=0.0, .z=1.0, .c=0.0};
   view_plane.z = (abs(camera_pos_scalar)-1.0) * pce::radar::sgn<double>(camera_pos_scalar);
-  ezp::print_labeled_item("viewplane z: ", view_plane.z);
+  // ezp::print_labeled_item("viewplane z: ", view_plane.z);
   glm::dvec3 point_wire_intersects_viewplane = vfunc::getPointAtWhichLineIntersectsPlane(
                                                    object_wire, view_plane);
   if (if_in_front_of_camera == true) {
@@ -78,6 +78,8 @@ glm::dvec2 calculateObjectLocationOnRadar(const glm::dvec3& rotated_pos,
   }
   return glm::dvec2(0, 10);
 }
+
+
 
 
 }
