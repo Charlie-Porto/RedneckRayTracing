@@ -67,7 +67,8 @@ int main(int argc, const char * argv[]) {
     
     /* Create Factories */
     auto sphere_object_factory = SphereObjectFactory();
-    for (int i = 0; i < 10; ++i) {
+    // sphere_object_factory.MakeTestObject();
+    for (int i = 0; i < 2; ++i) {
       sphere_object_factory.MakeObject();
     }
 
