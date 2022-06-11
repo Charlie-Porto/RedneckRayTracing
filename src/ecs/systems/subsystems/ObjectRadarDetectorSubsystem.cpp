@@ -70,7 +70,7 @@ public:
     }
   }        
      
-  std::unordered_map<uint32_t, glm::vec2> radar_map_; // public so easily pass-able to Tracer Subsystem
+  std::unordered_map<uint32_t, glm::dvec2> radar_map_; // public so easily pass-able to Tracer Subsystem
  
 };
 }

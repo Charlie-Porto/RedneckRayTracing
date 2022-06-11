@@ -60,23 +60,37 @@ bool checkIfObjectIsInFrontOfCamera(const glm::dvec3& obj_pos, const glm::dvec3&
 glm::dvec2 calculateObjectLocationOnRadar(const glm::dvec3& rotated_pos, 
                                           const bool& if_in_front_of_camera,
                                           double camera_pos_scalar) {
-     
-  const auto camera_pos = glm::dvec3(0.0, 0.0, 1.0) * camera_pos_scalar;
-  pce::math_objs::LineParametricEquation object_wire = vfunc::getLineThrough3dVectors(
-                                                           camera_pos, rotated_pos);
+  const auto camera_pos = glm::dvec3(0.0, 0.0, camera_pos_scalar);
+  // ezp::print_item("camera position per radar: ");
+  // vezp::print_dvec3(camera_pos);
+  // pce::math_objs::LineParametricEquation object_wire = vfunc::getLineThrough3dVectors(
+                                                          //  camera_pos, rotated_pos);
+  pce::math_objs::LineVectorForm vform_wire = vfunc::getVector3ThroughVector3s(
+                                                  camera_pos, rotated_pos);
+  // ezp::print_item("wire vector form per radar: (direction, origin");
+  ezp::print_item("rotated position: ");
+  vezp::print_dvec3(rotated_pos);
+  // vezp::print_dvec3(vform_wire.direction);
+  // vezp::print_dvec3(vform_wire.origin);
+                                                
   auto view_plane = pce::math_objs::Plane{.x=0.0, .y=0.0, .z=1.0, .c=0.0};
-  view_plane.z = (abs(camera_pos_scalar)-1.0) * pce::radar::sgn<double>(camera_pos_scalar);
+  view_plane.c = camera_pos_scalar + global_const::distance_camera_to_viewplane;
   // ezp::print_labeled_item("viewplane z: ", view_plane.z);
-  glm::dvec3 point_wire_intersects_viewplane = vfunc::getPointAtWhichLineIntersectsPlane(
-                                                   object_wire, view_plane);
+  // glm::dvec3 point_wire_intersects_viewplane = vfunc::getPointAtWhichLineIntersectsPlane(
+                                                  //  object_wire, view_plane);
+  glm::dvec3 point_wire_intersects_viewplane = vfunc::getPointWhereLineVFormIntersectsPlane(vform_wire, view_plane);
+
+  point_wire_intersects_viewplane.z = (camera_pos_scalar - 1.0);
+  ezp::print_item("point of intersection per radar");
+  vezp::print_dvec3(point_wire_intersects_viewplane);
   if (if_in_front_of_camera == true) {
-    auto const radar_location = glm::dvec2(point_wire_intersects_viewplane.x * 2.0,
-                                           point_wire_intersects_viewplane.y * 2.0);
+    auto const radar_location = glm::dvec2(point_wire_intersects_viewplane.x * global_const::pixel_stretch_ratio,
+                                           point_wire_intersects_viewplane.y * global_const::pixel_stretch_ratio);
     // ezp::print_labeled_item("radar location x: ", radar_location.x);
     // ezp::print_labeled_item("radar location y: ", radar_location.y);
     return radar_location;
   }
-  return glm::dvec2(0, 10);
+  return glm::dvec2(1000, 1000);
 }
 
 

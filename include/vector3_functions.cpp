@@ -9,6 +9,7 @@ functions for vector3s, straight out the math book
 
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
+#include <glm/geometric.hpp>
 #include <cmath>
 #include <iostream>
 
@@ -84,6 +85,20 @@ glm::dvec3 getPointAtWhichLineIntersectsPlane(pce::math_objs::LineParametricEqua
   const double vz = line.z_coefficient * t + line.z_constant;
 
   return glm::dvec3(vx, vy, vz);
+}
+
+glm::dvec3 getPointWhereLineVFormIntersectsPlane(pce::math_objs::LineVectorForm line,
+                                                 pce::math_objs::Plane plane) {
+  const double t_coefficient = line.direction.x * plane.x
+                             + line.direction.y * plane.y
+                             + line.direction.z * plane.z;
+  const double t_constant = -(line.origin.x * plane.x
+                            + line.origin.y * plane.y
+                            + line.origin.z * plane.z);
+  const double t = t_constant / t_coefficient;
+  return glm::dvec3(line.direction.x * t + line.origin.x,
+                    line.direction.y * t + line.origin.y,
+                    line.direction.z * t + line.origin.z);
 }
 
 std::vector<double> movePointAroundXZCircleByAngle(double new_angle,

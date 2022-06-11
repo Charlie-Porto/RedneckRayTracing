@@ -10,8 +10,8 @@ testing, broh.
 #include <gtest/gtest.h>
 
 // #include "funks_testing/test_checkIfPairInVector.cpp"
-// #include "funks_testing/test_checkIfLineVectorFormIntersectsSphere.cpp"
-#include "funks_testing/test_calculateClosestPointLineIntersectsSphere.cpp"
+#include "funks_testing/test_checkIfLineVectorFormIntersectsSphere.cpp"
+// #include "funks_testing/test_calculateClosestPointLineIntersectsSphere.cpp"
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

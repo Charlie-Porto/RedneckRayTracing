@@ -42,8 +42,8 @@ public:
 
   void MakeTestObject() {
     ezp::print_item("making object");
-    const double new_object_radius = 10.0;
-    glm::dvec3 new_object_location = glm::dvec3(2, 2, -2);
+    const double new_object_radius = 30.0;
+    glm::dvec3 new_object_location = glm::dvec3(20, 20, -20);
     Entity object = control.CreateEntity();
     control.AddComponent(object, pce::Location{
       .position = new_object_location

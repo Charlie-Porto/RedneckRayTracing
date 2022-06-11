@@ -94,7 +94,11 @@ void updateCameraPosition(Camera& camera, VirtualKeyboard& keyboard) {
   }
   if (joystick_report.W_pressed == true) {
     ezp::print_item("JOYSTICK: W");
+    if (camera.pov_scalar <= global_const::camera_inward_zoom_barrier + 10.0) {
+      ezp::print_item("NOT MOVING CLOSER: hit inward zoom barrier.");
+    } else {
     updateCameraPositionScalar(camera, -1.0);
+    }
   }
   if (joystick_report.S_pressed == true) {
     ezp::print_item("JOYSTICK: S");

@@ -7,8 +7,7 @@
 #include <glm/vec3.hpp>
 #include <glm/geometric.hpp>
 #include <ezprint.cpp>
-
-#include "../../../tools/math_objects/LineVectorForm.cpp"
+#include <math_objects/LineVectorForm.cpp>
 
 namespace pce {
 namespace math {
