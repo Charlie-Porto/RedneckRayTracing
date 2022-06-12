@@ -3,8 +3,9 @@
 
 
 #include <benchmark/benchmark.h>
-#include "system_helper_modules_testing/test_calculateNeighborVectorIncrements.cpp"
-#include "bmark_system_helper_modules/bmark_calculateHorizontalNeighborPixelVec3.cpp"
+// #include "system_helper_modules_testing/test_calculateNeighborVectorIncrements.cpp"
+// #include "bmark_system_helper_modules/bmark_calculateHorizontalNeighborPixelVec3.cpp"
+#include "bmark_system_helper_modules/bmark_convertPointOnViewSphereToPixel.cpp"
 
 BENCHMARK_MAIN();
 
