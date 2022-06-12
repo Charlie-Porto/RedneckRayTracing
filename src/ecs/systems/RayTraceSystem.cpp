@@ -46,15 +46,14 @@ public:
       pce::quickdraw::drawCircleAtVec2(value); // temporary -- useful for testing
 
       // perform crawl tracing for this pixel
-      std::vector<glm::dvec2> current_pixel_trace_log;
-      pce::raytrace::crawlTraceAtPixel(value, camera_operator_.camera_.pov_scalar,
-                                       key, current_pixel_trace_log);
+      // std::vector<glm::dvec2> current_pixel_trace_log;
+      // pce::raytrace::crawlTraceAtPixel(value, camera_operator_.camera_.pov_scalar,
+                                      //  key, current_pixel_trace_log);
       
-      for (auto const& pixel : current_pixel_trace_log) {
-        pce::quickdraw::drawPixelAtVec2(pixel);
-      }
+      // for (auto const& pixel : current_pixel_trace_log) {
+        // pce::quickdraw::drawPixelAtVec2(pixel);
+      // }
     }
-
 
   }
 

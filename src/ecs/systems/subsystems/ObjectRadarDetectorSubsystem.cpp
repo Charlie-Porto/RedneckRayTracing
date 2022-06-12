@@ -54,19 +54,16 @@ public:
     for (auto const& entity : entities) {
       auto const& location = control.GetComponent<pce::Location>(entity);
       auto& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
-      const bool if_object_in_radar_view = pce::radar::checkIfObjectIsInFrontOfCamera(
-                                               location.position,
-                                               camera.location_vec3,
-                                               camera.pov_scalar);
-      if (if_object_in_radar_view == true) {
-        rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(location.position,
-                                                                                camera.rotation_versor);
-        const glm::dvec2 radar = pce::radar::calculateObjectLocationOnRadar(
-                                              rotated_location.rotated_position,
-                                              if_object_in_radar_view,
-                                              camera.pov_scalar);
-        radar_map_[entity] = radar;
-      }
+      // const bool if_object_in_radar_view = pce::radar::checkIfObjectIsInFrontOfCamera(
+                                              //  location.position,
+                                              //  camera.location_vec3,
+                                              //  camera.pov_scalar);
+      rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(location.position,
+                                                                              camera.rotation_versor);
+      const glm::dvec3 sphere_viewplane_hitpoint = pce::radar::calculateWhereWireIntersectsViewSphere(
+                                                      rotated_location.rotated_position,
+                                                      camera.pov_scalar);
+      radar_map_[entity] = sphere_viewplane_hitpoint;
     }
   }        
      
