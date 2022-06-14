@@ -25,6 +25,20 @@ class RayTraceSystem : public ISystem {
 public:
   RayTraceSystem() { ezp::print_item("creating RayTraceSystem"); }
 
+  void TraceObjectCenters(const double camera_pos_scalar) {
+    for (auto const& entity : entities) {
+      ezp::print_item("starting trace on entity");
+      auto const& sphere_body = control.GetComponent<pce::SphereBody>(entity);
+      auto const& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
+      auto const& radar = control.GetComponent<pce::Radar>(entity);
+      std::vector<glm::dvec2> trace_log = {};
+      bool if_draw = pce::raytrace::tracePixel(radar, rotated_location.rotated_position,
+                                sphere_body.radius, camera_pos_scalar, trace_log);
+      pce::quickdraw::drawPixelAtVec2(radar.hitpoint_corresponding_pixel); 
+    }
+  }
+
+
   void UpdateRayTrace(const double camera_pos_scalar) {
     // ezp::print_item("updating RayTraceSystem");
     for (auto const& entity : entities) {
