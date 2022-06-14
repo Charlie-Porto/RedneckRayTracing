@@ -50,6 +50,7 @@ public:
     });
     control.AddComponent(object, pce::RotatedLocation{});
     control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
     objects_.push_back(object);
   }
 
@@ -65,6 +66,7 @@ public:
     });
     control.AddComponent(object, pce::RotatedLocation{});
     control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
     objects_.push_back(object);
   }
 

@@ -52,6 +52,7 @@ bool checkIfObjectIsInFrontOfCamera(const glm::dvec3& obj_pos, const glm::dvec3&
   return false;
 }
 
+
 glm::dvec3 calculateWhereWireIntersectsViewSphere(const glm::dvec3& object_rotated_position,
                                                   double camera_position_scalar) {
   const auto camera_position = glm::dvec3(0.0, 0.0, camera_position_scalar);
@@ -59,6 +60,7 @@ glm::dvec3 calculateWhereWireIntersectsViewSphere(const glm::dvec3& object_rotat
                                             camera_position, object_rotated_position);
   return wire.direction;
 }
+
 
 glm::dvec2 calculateObjectLocationOnRadar(const glm::dvec3& rotated_pos, 
                                           const bool& if_in_front_of_camera,
