@@ -65,6 +65,7 @@ int main(int argc, const char * argv[]) {
     Signature ray_trace_sig;
     ray_trace_sig.set(control.GetComponentType<pce::RotatedLocation>());
     ray_trace_sig.set(control.GetComponentType<pce::Radar>());
+    ray_trace_sig.set(control.GetComponentType<pce::SphereBody>());
     control.SetSystemSignature<pce::RayTraceSystem>(ray_trace_sig);
 
     auto object_radar_system = control.RegisterSystem<pce::ObjectRadarDetectorSystem>();
@@ -111,7 +112,7 @@ int main(int argc, const char * argv[]) {
         camera_system->UpdateCamera();
         object_radar_system->UpdateRadar(camera_system->ProvideCameraPositionScalar(),
                                          camera_system->ProvideCameraVersor());
-        // ray_trace_system->RayTrace(camera_system->ProvideCameraPositionScalar());
+        ray_trace_system->UpdateRayTrace(camera_system->ProvideCameraPositionScalar());
 
 
         /*~~~~~~~~~-------------- Draw and Render --------------------*/

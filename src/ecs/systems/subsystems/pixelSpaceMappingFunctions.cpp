@@ -40,6 +40,7 @@ glm::dvec3 calculateAdjacentPixelVector3(const glm::dvec3& base_vector,
 
 
 glm::dvec3 calculateVerticalNeighborPixelVec3(const glm::dvec3& base_vector, double direction) {
+  if (direction == 0.0) {return base_vector;}
   const double angle_of_axis = acos(dot(glm::dvec2(base_vector.x, base_vector.z), glm::dvec2(0, -1.0)));
   // ezp::print_labeled_item("angle of axis: ", angle_of_axis);
   const glm::dquat rotation_quaternion = qfunc::convertAngleAxisToQuaternion(
@@ -50,6 +51,7 @@ glm::dvec3 calculateVerticalNeighborPixelVec3(const glm::dvec3& base_vector, dou
 }
 
 glm::dvec3 calculateHorizontalNeighborPixelVec3(const glm::dvec3& base_vector, double direction) {
+  if (direction == 0.0) {return base_vector;}
   return calculateAdjacentPixelVector3(base_vector, global_const::pixel_angle_in_3space * direction, 
                                        glm::dvec3(0.0, 1.0, 0.0));
 }

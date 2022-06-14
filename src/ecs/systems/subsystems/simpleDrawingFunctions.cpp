@@ -5,11 +5,13 @@
 --------------------- Module Description -------------------------|
 simple drawing functions to assist the ray trace system
 -----------------------------------------------------------------*/
+#include <vector>
 #include <glm/vec2.hpp>
 
 #include <ezprint.cpp>
 #include <vezprint.cpp>
 #include <drawing_functions.cpp>
+#include <render_functions.cpp>
 #include "../../../SDL_core/simulation_manager.cpp"
 #include "../../../constants/static_variables.cpp"
 
@@ -23,6 +25,14 @@ glm::vec2 ConvertCartesianCoordinatesToSDL(glm::vec2 point) {
 }
 
 const std::vector<int> rcolor = {250, 10, 100, 255};
+void drawListOfPixels(const std::vector<glm::dvec2>& pixels) {
+  std::vector<glm::dvec2> sdl_pixels{};
+  for (int i = 0; i < pixels.size(); ++i) {
+    sdl_pixels.push_back(ConvertCartesianCoordinatesToSDL(pixels[i]));
+  }
+  pce::render::renderVec2PixelList(sdl_pixels, rcolor, Simulation::renderer);
+}
+
 void drawPixelAtVec2(glm::vec2 pixel) {
   const glm::vec2 sdl_transform = ConvertCartesianCoordinatesToSDL(pixel);
   // ezp::print_item("drawing pixel at Vec2");
@@ -32,8 +42,8 @@ void drawPixelAtVec2(glm::vec2 pixel) {
 
 const std::vector<int> mcolor = {5, 140, 15, 255};
 void drawCircleAtVec2(glm::vec2 point) {
-  ezp::print_item("drawing circle at Vec2");
-  vezp::print_dvec2(point);
+  // ezp::print_item("drawing circle at Vec2");
+  // vezp::print_dvec2(point);
   const glm::vec2 sdl_transform = ConvertCartesianCoordinatesToSDL(point);
   drawCircle(sdl_transform.x, sdl_transform.y, 15, mcolor, Simulation::renderer);
 }

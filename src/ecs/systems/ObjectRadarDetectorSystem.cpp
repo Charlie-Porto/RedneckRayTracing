@@ -37,7 +37,7 @@ public:
   ObjectRadarDetectorSystem() { ezp::print_item("creating ObjectRadarDetectionSubsystem"); }
 
   void UpdateRadar(const double camera_pos_scalar, const glm::dquat rotation_versor) {
-    ezp::print_item("updating Radar");
+    // ezp::print_item("updating Radar");
     for (auto const& entity : entities) {
       auto const& location = control.GetComponent<pce::Location>(entity);
       auto& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
@@ -52,8 +52,6 @@ public:
       radar.hitpoint_corresponding_pixel = pce::pix_map::convertPointOnViewSphereToPixel(
                                                sphere_viewplane_hitpoint, glm::dvec3(0, 0, camera_pos_scalar));
       pce::quickdraw::drawCircleAtVec2(radar.hitpoint_corresponding_pixel);
-      // ezp::print_item("drawing entity at: ");
-      // vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
     }
   }        
  
