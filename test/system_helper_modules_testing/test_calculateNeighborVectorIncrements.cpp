@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "../../src/ecs/systems/subsystems/pixelSpaceMappingFunctions.cpp"
-#include <benchmark/benchmark.h>
+// #include <benchmark/benchmark.h>
 #include <iostream>
 #include <stdio.h>
 #include <ezprint.cpp>
@@ -11,8 +11,8 @@
 namespace ktest {
 namespace test_calculateNeighborVectorIncrements {
 
-// double te_b = .000142506;
-// auto te_c = glm::dvec3(0.0, 1.0, 0.0);
+double te_b = .000142506;
+auto te_c = glm::dvec3(0.0, 1.0, 0.0);
 
 // static void BM_test_funcA(benchmark::State& state) {
 //   for (auto _ : state) {
@@ -21,20 +21,21 @@ namespace test_calculateNeighborVectorIncrements {
 // }
 
 auto te_a = glm::dvec3(0.0, 0.0, 1.0);
-static void BM_calculateVerticalNeighborPixelVec3_A(benchmark::State& state) {
-  for (auto _ : state) {
-     pce::pix_map::calculateVerticalNeighborPixelVec3(te_a, 1.0);
-  }
-}
-BENCHMARK(BM_calculateVerticalNeighborPixelVec3_A);
+// static void BM_calculateVerticalNeighborPixelVec3_A(benchmark::State& state) {
+//   for (auto _ : state) {
+//      pce::pix_map::calculateVerticalNeighborPixelVec3(te_a, 1.0);
+//   }
+// }
+// BENCHMARK(BM_calculateVerticalNeighborPixelVec3_A);
 
-auto bm_b = glm::dvec3(.4, .3, .7);
-static void BM_calculateVerticalNeighborPixelVec3_B(benchmark::State& state) {
-  for (auto _ : state) {
-     pce::pix_map::calculateVerticalNeighborPixelVec3(bm_b, 1.0);
-  }
-}
-BENCHMARK(BM_calculateVerticalNeighborPixelVec3_B);
+
+// auto bm_b = glm::dvec3(.4, .3, .7);
+// static void BM_calculateVerticalNeighborPixelVec3_B(benchmark::State& state) {
+//   for (auto _ : state) {
+//      pce::pix_map::calculateVerticalNeighborPixelVec3(bm_b, 1.0);
+//   }
+// }
+// BENCHMARK(BM_calculateVerticalNeighborPixelVec3_B);
 
 // static void BM_test_funcD(benchmark::State& state) {
   // for (auto _ : state) {
@@ -53,11 +54,11 @@ BENCHMARK(BM_calculateVerticalNeighborPixelVec3_B);
 // }
 // BENCHMARK(BM_test_funcC);
 
-// glm::dvec3 result_e = pce::pix_map::calculateAdjacentPixelVector3(te_a, te_b, te_c);
-// auto cr_e = glm::dvec3(0, 1.0, -0.0);
-// TEST(test_calculateAdjacentPixelVector3, case1) {
-  // ASSERT_EQ(cr_e, result_e);
-// }
+glm::dvec3 result_e = pce::pix_map::calculateAdjacentPixelVector3(te_a, te_b, te_c);
+auto cr_e = glm::dvec3(0, 1.0, -0.0);
+TEST(test_calculateAdjacentPixelVector3, case1) {
+  ASSERT_EQ(cr_e, result_e);
+}
 
 
 // auto result_f = pce::pix_map::convertAngleToComplexNumber(90.0);
@@ -73,12 +74,12 @@ BENCHMARK(BM_calculateVerticalNeighborPixelVec3_B);
 // }
 
 
-// double result_b = pce::pix_map::calculateStandardPixelDistance();
+double result_b = pce::pix_map::calculateStandardPixelDistance();
 
-// double cr_b = .000142506;
-// TEST(test_calculateStandardPixelDistance, case1) {
-//   ASSERT_EQ(cr_b, result_b);
-// }
+double cr_b = .000142506;
+TEST(test_calculateStandardPixelDistance, case1) {
+  ASSERT_EQ(cr_b, result_b);
+}
 
 // double tXa_a = 90;
 // auto tXa_b = glm::dvec3(1, 1, 1);

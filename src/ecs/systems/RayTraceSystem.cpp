@@ -17,6 +17,7 @@ System for performing raytracing.
 #include "../System.cpp"
 #include "rayTraceFunctions.cpp"
 #include "subsystems/simpleDrawingFunctions.cpp"
+#include "subsystems/spacePixelConversionFunctions.cpp"
 
 extern ControlPanel control;
 
@@ -32,9 +33,14 @@ public:
       auto const& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
       auto const& radar = control.GetComponent<pce::Radar>(entity);
       std::vector<glm::dvec2> trace_log = {};
-      bool if_draw = pce::raytrace::tracePixel(radar, rotated_location.rotated_position,
+      glm::dvec3 intersection = pce::raytrace::tracePixel(radar, rotated_location.rotated_position,
                                 sphere_body.radius, camera_pos_scalar, trace_log);
+      // ezp::print_labeled_item("if draw: ", if_draw);
+      // ezp::print_labeled_item("trace log size: ", trace_log.size());
+      // vezp::print_dvec3(intersection);
+      glm::dvec2 pixel = pce::pix_map::convertPointOnViewSphereToPixel(intersection, glm::dvec3(0, 0, camera_pos_scalar));
       pce::quickdraw::drawPixelAtVec2(radar.hitpoint_corresponding_pixel); 
+      // pce::quickdraw::drawPixelAtVec2(pixel); 
     }
   }
 
@@ -54,7 +60,9 @@ public:
         ezp::print_item("-------");
         vezp::print_dvec2(trace_log[i]);
       }
-      pce::quickdraw::drawListOfPixels(trace_log); 
+      // pce::quickdraw::drawListOfPixels(trace_log); 
+      ezp::print_labeled_item("trace log size: ", trace_log.size());
+      // pce::quickdraw::drawPixelAtVec2(trace_log[0]); 
     }
   }
 

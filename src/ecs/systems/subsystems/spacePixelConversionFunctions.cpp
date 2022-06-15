@@ -24,11 +24,17 @@ glm::dvec3 convertPixelToPointOnViewSphere(const glm::dvec2& pixel,
   // crawl along x, then y pixel axes to arrive at point in 3space
   for (int i = 0; i < abs(pixel.x); ++i) {
     base_vector = pce::pix_map::calculateHorizontalNeighborPixelVec3(base_vector, pce::math::sign(pixel.x));
+    // vezp::print_dvec3(base_vector);
+    // ezp::print_item("----------");
   }
   for (int i = 0; i < abs(pixel.y); ++i) {
     base_vector = pce::pix_map::calculateVerticalNeighborPixelVec3(base_vector, -pce::math::sign(pixel.y));
+    // vezp::print_dvec3(base_vector);
+    // ezp::print_item("----------");
   }
   auto b = (view_sphere_center + base_vector);
+
+  // ezp::print_item("view sphere center: ");
   // ezp::print_item("point result: ");
   // vezp::print_dvec3(b);
   return b;
@@ -39,12 +45,14 @@ glm::dvec2 convertPointOnViewSphereToPixel(const glm::dvec3& point,
                                            const glm::dvec3& view_sphere_center) {
   // ezp::print_item("point to pixel input: ");
   // vezp::print_dvec3(point);
-  auto mpoint = glm::dvec3(point.x, point.y, point.z);
+  auto mpoint = glm::dvec3(point.x, point.y, point.z) - view_sphere_center;
   int i = 0;
   while (abs(mpoint.y) >= 0.0001 && i <= 2000) {
+    // mpoint = pce::pix_map::calculateVerticalNeighborPixelVec3(mpoint, pce::math::sign(point.y));
     mpoint = pce::pix_map::calculateVerticalNeighborPixelVec3(mpoint, pce::math::sign(point.y));
-    // vezp::print_dvec3(mpoint);
     // ezp::print_item("----------");
+    // vezp::print_dvec3(point);
+    // vezp::print_dvec3(mpoint);
     ++i;
   }
   int j = 0;
@@ -53,8 +61,9 @@ glm::dvec2 convertPointOnViewSphereToPixel(const glm::dvec3& point,
     ++j;
   }
   auto v = glm::dvec2(double(j) * pce::math::sign(point.x), double(i) * pce::math::sign(point.y));
-  // ezp::print_item("pixel result");
-  // vezp::print_dvec2(v);
+  ezp::print_item("----------");
+  ezp::print_item("pixel result");
+  vezp::print_dvec2(v);
   return v;
 }
 

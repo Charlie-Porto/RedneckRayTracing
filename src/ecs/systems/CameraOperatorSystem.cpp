@@ -37,6 +37,7 @@ public:
 
   void UpdateCamera() {
     pce::cam_op::updateCameraPosition(camera_, keyboard_);
+    ezp::print_labeled_item("camera position scalar: ", camera_.pov_scalar);
   }
 
 private:

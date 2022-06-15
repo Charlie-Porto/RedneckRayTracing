@@ -14,10 +14,12 @@ testing, broh.
 // #include "funks_testing/test_calculateClosestPointLineIntersectsSphere.cpp"
 // #include "system_helper_modules_testing/test_calculateNeighborVectorIncrements.cpp"
 // #include "system_helper_modules_testing/test_calculateHorizontalNeighborPixelVec3.cpp"
+#include "system_helper_modules_testing/test_calculateVerticalNeighborPixelVec3.cpp"
 // #include "system_helper_modules_testing/test_convertPixelToPointOnViewSphere.cpp"
 // #include "system_helper_modules_testing/test_convertPointOnViewSphereToPixel.cpp"
 // #include "system_helper_modules_testing/test_calculatePointAlongLineAtDistance.cpp"
-#include "system_helper_modules_testing/test_calculateObjectRadarLocation.cpp"
+// #include "system_helper_modules_testing/test_calculateObjectRadarLocation.cpp"
+// #include "system_helper_modules_testing/test_calculateAdjacentPixelVector3.cpp"
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);

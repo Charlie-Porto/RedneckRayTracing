@@ -33,9 +33,14 @@ glm::dvec3 calculateObjectRadarLocation(const glm::dvec3& object_center,
   pce::math_objs::LineVectorForm wire = vfunc::getVector3ThroughVector3s(
                                         glm::dvec3(0, 0, camera_position_scalar),
                                         object_center);
-  const glm::dvec3 intersection_point = glm::dvec3(0, 0, camera_position_scalar) - wire.origin;
+  // ezp::print_item("radar wire origin: ");
+  // vezp::print_dvec3(wire.origin);
+  // ezp::print_item("radar wire direction: ");
+  // vezp::print_dvec3(wire.direction);
+  const glm::dvec3 intersection_point = wire.direction + glm::dvec3(0, 0, camera_position_scalar);
+  // ezp::print_item("radar wire-viewsphere intersection point: ");
+  // vezp::print_dvec3(intersection_point);
   return intersection_point;
-  
 }
 
 

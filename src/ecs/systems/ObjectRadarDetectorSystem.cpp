@@ -28,6 +28,7 @@ with these points and "crawl" outward.
 #include "subsystems/spacePixelConversionFunctions.cpp"
 #include "subsystems/simpleDrawingFunctions.cpp"
 #include "objectRadarDetectorFunctions.cpp"
+#include "sphericalRadarFunctions.cpp"
 
 extern ControlPanel control;
 
@@ -45,12 +46,26 @@ public:
 
       rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(location.position,
                                                                               rotation_versor);
-      const glm::dvec3 sphere_viewplane_hitpoint = pce::radar::calculateWhereWireIntersectsViewSphere(
+      
+
+      /* the below is for a flat viewplane. name wrong but convenient for switching between while in dev stage */
+      // const glm::dvec3 sphere_viewplane_hitpoint = pce::radar::calculateWhereWireIntersectsViewSphere(
+                                                      // rotated_location.rotated_position,
+                                                      // camera_pos_scalar);
+
+      const glm::dvec3 sphere_viewplane_hitpoint = pce::radar::calculateObjectRadarLocation(
                                                       rotated_location.rotated_position,
                                                       camera_pos_scalar);
+
       radar.view_sphere_hitpoint = sphere_viewplane_hitpoint;
       radar.hitpoint_corresponding_pixel = pce::pix_map::convertPointOnViewSphereToPixel(
                                                sphere_viewplane_hitpoint, glm::dvec3(0, 0, camera_pos_scalar));
+      // ezp::print_item("hitpoint: ");
+      // vezp::print_dvec3(sphere_viewplane_hitpoint);
+      ezp::print_item("hitpoint pixel: ");
+      vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
+      ezp::print_item(" --------- ");
+
       pce::quickdraw::drawCircleAtVec2(radar.hitpoint_corresponding_pixel);
     }
   }        
