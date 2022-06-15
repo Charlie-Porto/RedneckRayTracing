@@ -70,6 +70,18 @@ public:
     objects_.push_back(object);
   }
 
+  void MakeObjectAtLocation(const glm::dvec3& location) {
+    const double new_object_radius = 3.0;
+    Entity object = control.CreateEntity();
+    control.AddComponent(object, pce::Location{
+      .position = location
+    });
+    control.AddComponent(object, pce::RotatedLocation{});
+    control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
+    objects_.push_back(object);
+  }
+
 private:
   std::vector<Entity> objects_;
 };

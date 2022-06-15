@@ -25,6 +25,7 @@
 
 /* factories */
 #include "ecs/entity_factories/SphereObjectFactory.cpp"
+#include "ecs/entity_factories/AxisGenerator.cpp"
 
 /* other */
 #include <simple_framerate_timer.cpp>
@@ -87,6 +88,11 @@ int main(int argc, const char * argv[]) {
     // for (int i = 0; i < 2; ++i) {
     //   sphere_object_factory.MakeObject();
     // }
+    
+    auto axis_generator = AxisGenerator();
+    axis_generator.BuildXAxis();
+    axis_generator.BuildYAxis();
+    axis_generator.BuildZAxis();
 
     
     simple_framerate_timer simple_timer = simple_framerate_timer();
