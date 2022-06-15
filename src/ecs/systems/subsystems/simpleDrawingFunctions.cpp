@@ -40,6 +40,13 @@ void drawPixelAtVec2(glm::vec2 pixel) {
   drawPixelVec2(sdl_transform, rcolor, Simulation::renderer);
 }
 
+void drawSmallCircleAtVec2(glm::vec2 point) {
+  // ezp::print_item("drawing circle at Vec2");
+  // vezp::print_dvec2(point);
+  const glm::vec2 sdl_transform = ConvertCartesianCoordinatesToSDL(point);
+  drawCircle(sdl_transform.x, sdl_transform.y, 2, rcolor, Simulation::renderer);
+}
+
 const std::vector<int> mcolor = {5, 140, 15, 255};
 void drawCircleAtVec2(glm::vec2 point) {
   // ezp::print_item("drawing circle at Vec2");

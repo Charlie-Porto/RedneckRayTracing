@@ -28,7 +28,7 @@ public:
 
   void TraceObjectCenters(const double camera_pos_scalar) {
     for (auto const& entity : entities) {
-      ezp::print_item("starting trace on entity");
+      // ezp::print_item("starting trace on entity");
       auto const& sphere_body = control.GetComponent<pce::SphereBody>(entity);
       auto const& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
       auto const& radar = control.GetComponent<pce::Radar>(entity);
@@ -40,7 +40,8 @@ public:
       // vezp::print_dvec3(intersection);
       glm::dvec2 pixel = pce::pix_map::convertPointOnViewSphereToPixel(intersection, glm::dvec3(0, 0, camera_pos_scalar));
       // pce::quickdraw::drawPixelAtVec2(radar.hitpoint_corresponding_pixel); 
-      pce::quickdraw::drawPixelAtVec2(pixel); 
+      // pce::quickdraw::drawPixelAtVec2(pixel); 
+      pce::quickdraw::drawSmallCircleAtVec2(pixel); 
     }
   }
 

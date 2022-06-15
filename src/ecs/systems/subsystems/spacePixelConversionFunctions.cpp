@@ -61,9 +61,9 @@ glm::dvec2 convertPointOnViewSphereToPixel(const glm::dvec3& point,
     ++j;
   }
   auto v = glm::dvec2(double(j) * pce::math::sign(point.x), double(i) * pce::math::sign(point.y));
-  ezp::print_item("----------");
-  ezp::print_item("pixel result");
-  vezp::print_dvec2(v);
+  // ezp::print_item("----------");
+  // ezp::print_item("pixel result");
+  // vezp::print_dvec2(v);
   return v;
 }
 

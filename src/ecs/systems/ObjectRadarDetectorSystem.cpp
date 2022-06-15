@@ -62,11 +62,11 @@ public:
                                                sphere_viewplane_hitpoint, glm::dvec3(0, 0, camera_pos_scalar));
       // ezp::print_item("hitpoint: ");
       // vezp::print_dvec3(sphere_viewplane_hitpoint);
-      ezp::print_item("hitpoint pixel: ");
-      vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
-      ezp::print_item(" --------- ");
+      // ezp::print_item("hitpoint pixel: ");
+      // vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
+      // ezp::print_item(" --------- ");
 
-      pce::quickdraw::drawCircleAtVec2(radar.hitpoint_corresponding_pixel);
+      // pce::quickdraw::drawCircleAtVec2(radar.hitpoint_corresponding_pixel);
     }
   }        
  
