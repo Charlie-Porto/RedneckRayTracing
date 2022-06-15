@@ -16,12 +16,16 @@
 #include "ecs/components/location_component.cpp"
 #include "ecs/components/rotated_location_component.cpp"
 #include "ecs/components/sphere_body_component.cpp"
+#include "ecs/components/radar_component.cpp"
 
 /* systems */
 #include "ecs/systems/RayTraceSystem.cpp"
+#include "ecs/systems/ObjectRadarDetectorSystem.cpp"
+#include "ecs/systems/CameraOperatorSystem.cpp"
 
 /* factories */
 #include "ecs/entity_factories/SphereObjectFactory.cpp"
+#include "ecs/entity_factories/AxisGenerator.cpp"
 
 /* other */
 #include <simple_framerate_timer.cpp>
@@ -55,22 +59,40 @@ int main(int argc, const char * argv[]) {
     control.RegisterComponent<pce::Location>();
     control.RegisterComponent<pce::RotatedLocation>();
     control.RegisterComponent<pce::SphereBody>();
+    control.RegisterComponent<pce::Radar>();
 
     /* Register Systems */
     auto ray_trace_system = control.RegisterSystem<pce::RayTraceSystem>();
     Signature ray_trace_sig;
-    ray_trace_sig.set(control.GetComponentType<pce::Location>());
     ray_trace_sig.set(control.GetComponentType<pce::RotatedLocation>());
+    ray_trace_sig.set(control.GetComponentType<pce::Radar>());
+    ray_trace_sig.set(control.GetComponentType<pce::SphereBody>());
     control.SetSystemSignature<pce::RayTraceSystem>(ray_trace_sig);
 
-    ray_trace_system->Init();
+    auto object_radar_system = control.RegisterSystem<pce::ObjectRadarDetectorSystem>();
+    Signature object_radar_sig;
+    object_radar_sig.set(control.GetComponentType<pce::Location>());
+    object_radar_sig.set(control.GetComponentType<pce::RotatedLocation>());
+    object_radar_sig.set(control.GetComponentType<pce::Radar>());
+    control.SetSystemSignature<pce::ObjectRadarDetectorSystem>(object_radar_sig);
+
+    auto camera_system = control.RegisterSystem<pce::CameraOperatorSystem>();
+    Signature camera_sig;
+    control.SetSystemSignature<pce::CameraOperatorSystem>(camera_sig);
+
+    camera_system->Init();
     
     /* Create Factories */
     auto sphere_object_factory = SphereObjectFactory();
     sphere_object_factory.MakeTestObject();
-    for (int i = 0; i < 2; ++i) {
+    // for (int i = 0; i < 2; ++i) {
     //   sphere_object_factory.MakeObject();
-    }
+    // }
+    
+    auto axis_generator = AxisGenerator();
+    axis_generator.BuildXAxis();
+    axis_generator.BuildYAxis();
+    axis_generator.BuildZAxis();
 
     
     simple_framerate_timer simple_timer = simple_framerate_timer();
@@ -93,8 +115,11 @@ int main(int argc, const char * argv[]) {
 
         /*~~~~~~~~~------------- Do Stuff and Update ----------------*/
         double ticks = (SDL_GetTicks()/1000.0);
-        ray_trace_system->SetupRayTrace();
-        ray_trace_system->RayTrace();
+        camera_system->UpdateCamera();
+        object_radar_system->UpdateRadar(camera_system->ProvideCameraPositionScalar(),
+                                         camera_system->ProvideCameraVersor());
+        // ray_trace_system->UpdateRayTrace(camera_system->ProvideCameraPositionScalar());
+        ray_trace_system->TraceObjectCenters(camera_system->ProvideCameraPositionScalar());
 
 
         /*~~~~~~~~~-------------- Draw and Render --------------------*/

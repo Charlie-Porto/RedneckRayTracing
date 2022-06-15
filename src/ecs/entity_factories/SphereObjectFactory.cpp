@@ -11,12 +11,12 @@ factory class for making planet-like sphere entities.
 
 extern ControlPanel control; 
 
-const double min_z = -90.0;
+const double min_z = -200.0;
 const double max_z = 0.0;
 const double min_x = 0.0;
-const double max_x = 90.0;
+const double max_x = 200.0;
 const double min_y = 0.0;
-const double max_y = 90.0;
+const double max_y = 200.0;
 const double min_r = 5.0;
 const double max_r = 20.0;
 
@@ -42,14 +42,15 @@ public:
 
   void MakeTestObject() {
     ezp::print_item("making object");
-    const double new_object_radius = 30.0;
-    glm::dvec3 new_object_location = glm::dvec3(20, 20, -20);
+    const double new_object_radius = 5.0;
+    glm::dvec3 new_object_location = glm::dvec3(5, 5, -5);
     Entity object = control.CreateEntity();
     control.AddComponent(object, pce::Location{
       .position = new_object_location
     });
     control.AddComponent(object, pce::RotatedLocation{});
     control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
     objects_.push_back(object);
   }
 
@@ -65,6 +66,19 @@ public:
     });
     control.AddComponent(object, pce::RotatedLocation{});
     control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
+    objects_.push_back(object);
+  }
+
+  void MakeObjectAtLocation(const glm::dvec3& location) {
+    const double new_object_radius = 3.0;
+    Entity object = control.CreateEntity();
+    control.AddComponent(object, pce::Location{
+      .position = location
+    });
+    control.AddComponent(object, pce::RotatedLocation{});
+    control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
     objects_.push_back(object);
   }
 

@@ -1,5 +1,5 @@
-#ifndef CameraOperatorSubsystem_cpp
-#define CameraOperatorSubsystem_cpp
+#ifndef CameraOperatorSystem_cpp
+#define CameraOperatorSystem_cpp
 
 /*----------------------------------------------------------------|
 --------------------- Module Description -------------------------|
@@ -11,10 +11,11 @@ class for operating the camera
 #include <camera_functions.cpp>
 #include <virtual_keyboard.cpp>
 
+#include "../System.cpp"
 #include "cameraOperatorFunctions.cpp"
 
 namespace pce {
-class CameraOperatorSubsystem {
+class CameraOperatorSystem : public ISystem {
 public:
   void Init() {
     camera_.location_vec3 = glm::dvec3(0.0, 0.0, 250.0);
@@ -26,15 +27,23 @@ public:
     // camera_.focus_distance = 30.0; 
   }
 
-  void UpdateCamera() {
-    pce::cam_op::updateCameraPosition(camera_, keyboard_);
+  const glm::dquat& ProvideCameraVersor() const {
+    return camera_.rotation_versor;
   }
 
-Camera camera_; // making this public for now for easy & quick pass to the 
-                // radar system
+  const double ProvideCameraPositionScalar() const {
+    return camera_.pov_scalar;
+  }
+
+  void UpdateCamera() {
+    pce::cam_op::updateCameraPosition(camera_, keyboard_);
+    ezp::print_labeled_item("camera position scalar: ", camera_.pov_scalar);
+  }
+
 private:
+Camera camera_;
 VirtualKeyboard keyboard_;
 
 };
 }
-#endif /* CameraOperatorSubsystem_cpp */
+#endif /* CameraOperatorSystem_cpp */

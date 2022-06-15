@@ -21,7 +21,7 @@ camera operation helper functions
 #include <math_objects/Plane.cpp>
 #include <math_objects/LineParamEq.cpp>
 
-#include "../../../constants/static_variables.cpp"
+#include "../../constants/static_variables.cpp"
 
 namespace pce {
 namespace cam_op {

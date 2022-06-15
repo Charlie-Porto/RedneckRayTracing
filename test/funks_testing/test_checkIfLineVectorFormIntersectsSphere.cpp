@@ -2,6 +2,8 @@
 #define test_check_if_linevectorform_intersects_sphere_cpp
 
 #include <gtest/gtest.h>
+
+#include <glm/geometric.hpp>
 #include "../../src/tools/math_objects/LineVectorForm.cpp"
 #include "../../src/ecs/systems/funks/checkIfLineVectorFormIntersectsSphere.cpp"
 
@@ -63,7 +65,7 @@ double te_c = 55.0;
 bool result_e = pce::math::checkIfLineVectorFormIntersectsSphere(te_a, te_b, te_c);
 bool cr_e = true;
 
-// case 5
+// case 6
 pce::math_objs::LineVectorForm tf_a{
   .origin = glm::dvec3(0.0, 0.0, 250.0),
   .direction = glm::dvec3(0.0, 0.0, 1.0)
@@ -72,6 +74,18 @@ auto tf_b = glm::dvec3(20.0, 20.0, -20);
 double tf_c = 15.0;
 bool result_f = pce::math::checkIfLineVectorFormIntersectsSphere(tf_a, tf_b, tf_c);
 bool cr_f = false;
+
+
+// case 7
+pce::math_objs::LineVectorForm tg_a{
+  .origin = glm::dvec3(0.0, 0.0, 12),
+  .direction = glm::normalize(glm::dvec3(0, 13, -12))
+};
+auto tg_b = glm::dvec3(0, 26, -24);
+double tg_c = 10.0;
+bool result_g = pce::math::checkIfLineVectorFormIntersectsSphere(tg_a, tg_b, tg_c);
+bool cr_g = true;
+
 
 
 TEST(test_check_if_linevectorform_intersects_sphere, case1) {
@@ -91,6 +105,9 @@ TEST(test_check_if_linevectorform_intersects_sphere, case5) {
 }
 TEST(test_check_if_linevectorform_intersects_sphere, case6) {
   ASSERT_EQ(cr_f, result_f);
+}
+TEST(test_check_if_linevectorform_intersects_sphere, case7) {
+  ASSERT_EQ(cr_g, result_g);
 }
 
 

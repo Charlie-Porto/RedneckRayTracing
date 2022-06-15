@@ -15,53 +15,57 @@ System for performing raytracing.
 #include <vezprint.cpp>
 
 #include "../System.cpp"
-#include "subsystems/CameraOperatorSubsystem.cpp"
-#include "subsystems/ObjectRadarDetectorSubsystem.cpp"
 #include "rayTraceFunctions.cpp"
 #include "subsystems/simpleDrawingFunctions.cpp"
+#include "subsystems/spacePixelConversionFunctions.cpp"
 
 extern ControlPanel control;
-const int TOTAL_PIXELS = global_const::screen_x * global_const::screen_y;
 
 namespace pce {
 class RayTraceSystem : public ISystem {
 public:
   RayTraceSystem() { ezp::print_item("creating RayTraceSystem"); }
-  void Init() {
-    camera_operator_.Init();
-  }
 
-
-  void SetupRayTrace() {
-    camera_operator_.UpdateCamera(); 
-    radar_detector_.UpdateRadar(entities, camera_operator_.camera_);
-    // radar_detector_.PrintRadarMapContents();
-  }
-  
-
-
-  void RayTrace() {
-    // std::unordered_map<uint32_t, glm::vec2> master_pixel_trace_log;
-    for (auto const& [key, value] : radar_detector_.radar_map_) {
-      pce::quickdraw::drawCircleAtVec2(value); // temporary -- useful for testing
-
-      // perform crawl tracing for this pixel
-      std::vector<glm::dvec2> current_pixel_trace_log;
-      pce::raytrace::crawlTraceAtPixel(value, camera_operator_.camera_.pov_scalar,
-                                       key, current_pixel_trace_log);
-      
-      for (auto const& pixel : current_pixel_trace_log) {
-        pce::quickdraw::drawPixelAtVec2(pixel);
-      }
+  void TraceObjectCenters(const double camera_pos_scalar) {
+    for (auto const& entity : entities) {
+      // ezp::print_item("starting trace on entity");
+      auto const& sphere_body = control.GetComponent<pce::SphereBody>(entity);
+      auto const& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
+      auto const& radar = control.GetComponent<pce::Radar>(entity);
+      std::vector<glm::dvec2> trace_log = {};
+      glm::dvec3 intersection = pce::raytrace::tracePixel(radar, rotated_location.rotated_position,
+                                sphere_body.radius, camera_pos_scalar, trace_log);
+      // ezp::print_labeled_item("if draw: ", if_draw);
+      // ezp::print_labeled_item("trace log size: ", trace_log.size());
+      // vezp::print_dvec3(intersection);
+      glm::dvec2 pixel = pce::pix_map::convertPointOnViewSphereToPixel(intersection, glm::dvec3(0, 0, camera_pos_scalar));
+      // pce::quickdraw::drawPixelAtVec2(radar.hitpoint_corresponding_pixel); 
+      // pce::quickdraw::drawPixelAtVec2(pixel); 
+      pce::quickdraw::drawSmallCircleAtVec2(pixel); 
     }
-
-
   }
 
-private:
-  CameraOperatorSubsystem camera_operator_;
-  ObjectRadarDetectorSubsystem radar_detector_;
-  // TracerSubsystem tracer_;
+
+  void UpdateRayTrace(const double camera_pos_scalar) {
+    // ezp::print_item("updating RayTraceSystem");
+    for (auto const& entity : entities) {
+      ezp::print_item("starting trace on entity");
+      auto const& sphere_body = control.GetComponent<pce::SphereBody>(entity);
+      auto const& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
+      auto const& radar = control.GetComponent<pce::Radar>(entity);
+      std::vector<glm::dvec2> trace_log = {};
+      pce::raytrace::crawlTraceAtPixel(radar, rotated_location.rotated_position,
+                                       sphere_body.radius, camera_pos_scalar, trace_log);
+            
+      for (int i = 0; i < trace_log.size(); ++i) {
+        ezp::print_item("-------");
+        vezp::print_dvec2(trace_log[i]);
+      }
+      // pce::quickdraw::drawListOfPixels(trace_log); 
+      ezp::print_labeled_item("trace log size: ", trace_log.size());
+      // pce::quickdraw::drawPixelAtVec2(trace_log[0]); 
+    }
+  }
 
 };
 }

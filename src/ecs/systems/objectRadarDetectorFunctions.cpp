@@ -29,18 +29,13 @@ glm::dvec3 rotateObjectCenterPoint(const glm::dvec3& point, const glm::dquat& ca
 }
 
 
-pce::math_objs::LineParametricEquation calculateObjectWire(const glm::dvec3& object_rotated_pos,
-                                                           const glm::dvec3& camera_pos) {
-  return vfunc::getLineThrough3dVectors(object_rotated_pos, camera_pos);
-}
-
-
 glm::dvec3 calculatePointWireIntersectsViewPlane(pce::math_objs::LineParametricEquation wire,
                                                  pce::math_objs::Plane viewplane) {
   return vfunc::getPointAtWhichLineIntersectsPlane(wire, viewplane);
 }
 
 
+// TODO: make this function branchless
 bool checkIfObjectIsInFrontOfCamera(const glm::dvec3& obj_pos, const glm::dvec3& camera_pos,
                                     const double camera_pov_scalar) {
   const double distance_obj_to_POV = vfunc::calculateDistanceBetweenPosition3Vectors(camera_pos,
@@ -56,6 +51,16 @@ bool checkIfObjectIsInFrontOfCamera(const glm::dvec3& obj_pos, const glm::dvec3&
   }
   return false;
 }
+
+
+glm::dvec3 calculateWhereWireIntersectsViewSphere(const glm::dvec3& object_rotated_position,
+                                                  double camera_position_scalar) {
+  const auto camera_position = glm::dvec3(0.0, 0.0, camera_position_scalar);
+  pce::math_objs::LineVectorForm wire = vfunc::getVector3ThroughVector3s(
+                                            camera_position, object_rotated_position);
+  return wire.direction;
+}
+
 
 glm::dvec2 calculateObjectLocationOnRadar(const glm::dvec3& rotated_pos, 
                                           const bool& if_in_front_of_camera,
