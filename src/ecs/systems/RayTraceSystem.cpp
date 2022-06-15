@@ -39,8 +39,8 @@ public:
       // ezp::print_labeled_item("trace log size: ", trace_log.size());
       // vezp::print_dvec3(intersection);
       glm::dvec2 pixel = pce::pix_map::convertPointOnViewSphereToPixel(intersection, glm::dvec3(0, 0, camera_pos_scalar));
-      pce::quickdraw::drawPixelAtVec2(radar.hitpoint_corresponding_pixel); 
-      // pce::quickdraw::drawPixelAtVec2(pixel); 
+      // pce::quickdraw::drawPixelAtVec2(radar.hitpoint_corresponding_pixel); 
+      pce::quickdraw::drawPixelAtVec2(pixel); 
     }
   }
 
