@@ -41,15 +41,21 @@ public:
                    const glm::dvec3& camera_focus_position) {
     // ezp::print_item("updating Radar");
     for (auto const& entity : entities) {
-      auto& location = control.GetComponent<pce::Location>(entity);
+      auto const& location = control.GetComponent<pce::Location>(entity);
       auto& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
       auto& radar = control.GetComponent<pce::Radar>(entity);
 
-      rotated_location.rotated_position = pce::radar::transformObjectCenterPoint(location.position,
-                                                                 camera_focus_position);
 
-      rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(rotated_location.rotated_position,
+      rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(location.position,
                                                                               rotation_versor);
+      rotated_location.rotated_position = pce::radar::transformObjectCenterPoint(rotated_location.rotated_position,
+                                                                                camera_focus_position);
+      
+      // rotated_location.rotated_position = pce::radar::transformObjectCenterPoint(location.position,
+                                                                //  camera_focus_position);
+
+      // rotated_location.rotated_position = pce::radar::rotateObjectCenterPoint(rotated_location.rotated_position,
+                                                                              // rotation_versor);
       
 
       /* the below is for a flat viewplane. name wrong but convenient for switching between while in dev stage */
@@ -70,7 +76,7 @@ public:
       // vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
       // ezp::print_item(" --------- ");
 
-      pce::quickdraw::drawCircleAtVec2(radar.hitpoint_corresponding_pixel);
+      // pce::quickdraw::drawCircleAtVec2(radar.hitpoint_corresponding_pixel);
     }
   }        
  

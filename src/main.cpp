@@ -17,6 +17,7 @@
 #include "ecs/components/rotated_location_component.cpp"
 #include "ecs/components/sphere_body_component.cpp"
 #include "ecs/components/radar_component.cpp"
+#include "ecs/components/surface_component.cpp"
 
 /* systems */
 #include "ecs/systems/RayTraceSystem.cpp"
@@ -60,6 +61,7 @@ int main(int argc, const char * argv[]) {
     control.RegisterComponent<pce::RotatedLocation>();
     control.RegisterComponent<pce::SphereBody>();
     control.RegisterComponent<pce::Radar>();
+    control.RegisterComponent<pce::Surface>();
 
     /* Register Systems */
     auto ray_trace_system = control.RegisterSystem<pce::RayTraceSystem>();
@@ -67,6 +69,7 @@ int main(int argc, const char * argv[]) {
     ray_trace_sig.set(control.GetComponentType<pce::RotatedLocation>());
     ray_trace_sig.set(control.GetComponentType<pce::Radar>());
     ray_trace_sig.set(control.GetComponentType<pce::SphereBody>());
+    ray_trace_sig.set(control.GetComponentType<pce::Surface>());
     control.SetSystemSignature<pce::RayTraceSystem>(ray_trace_sig);
 
     auto object_radar_system = control.RegisterSystem<pce::ObjectRadarDetectorSystem>();
@@ -84,7 +87,8 @@ int main(int argc, const char * argv[]) {
     
     /* Create Factories */
     auto sphere_object_factory = SphereObjectFactory();
-    sphere_object_factory.MakeTestObject();
+    // sphere_object_factory.MakeTestObject();
+    sphere_object_factory.MakeMoon();
     // for (int i = 0; i < 2; ++i) {
     //   sphere_object_factory.MakeObject();
     // }
@@ -94,6 +98,7 @@ int main(int argc, const char * argv[]) {
     axis_generator.BuildYAxis();
     axis_generator.BuildZAxis();
 
+    ray_trace_system->PerformInitialEntitySift();
     
     simple_framerate_timer simple_timer = simple_framerate_timer();
 
@@ -116,11 +121,13 @@ int main(int argc, const char * argv[]) {
         /*~~~~~~~~~------------- Do Stuff and Update ----------------*/
         double ticks = (SDL_GetTicks()/1000.0);
         camera_system->UpdateCamera();
-        object_radar_system->UpdateRadar(camera_system->ProvideCameraPositionScalar(),
+        const double cam_position_scalar = camera_system->ProvideCameraPositionScalar();
+        object_radar_system->UpdateRadar(cam_position_scalar,
                                          camera_system->ProvideCameraVersor(),
                                          camera_system->ProvideCameraFocusPosition());
-        // ray_trace_system->UpdateRayTrace(camera_system->ProvideCameraPositionScalar());
-        ray_trace_system->TraceObjectCenters(camera_system->ProvideCameraPositionScalar());
+        ray_trace_system->TraceSuperimposedEntities(cam_position_scalar);
+        // ray_trace_system->TraceObjectCenters(cam_position_scalar);
+        ray_trace_system->UpdateRayTrace(cam_position_scalar);
 
 
         /*~~~~~~~~~-------------- Draw and Render --------------------*/

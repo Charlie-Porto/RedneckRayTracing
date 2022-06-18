@@ -67,8 +67,8 @@ void moveCameraPositionFrontBack(Camera& camera, const double& direction) {
                                                 camera.location_vec3);
   const glm::dvec3 point_adjustment = (glm::normalize(meridian.direction)
                                     * direction);
-  ezp::print_item("point adjustment: ");
-  vezp::print_dvec3(point_adjustment);
+  // ezp::print_item("point adjustment: ");
+  // vezp::print_dvec3(point_adjustment);
   camera.location_vec3 += point_adjustment;
   camera.focus_point += point_adjustment;
 }
@@ -184,11 +184,11 @@ void updateCameraPositionFreeRoam(Camera& camera, VirtualKeyboard& keyboard) {
   }
   if (joystick_report.W_pressed == true) {
     ezp::print_item("JOYSTICK: W");
-    moveCameraPositionFrontBack(camera, 1.0);
+    moveCameraPositionFrontBack(camera, -1.0);
   }
   if (joystick_report.S_pressed == true) {
     ezp::print_item("JOYSTICK: S");
-    moveCameraPositionFrontBack(camera, -1.0);
+    moveCameraPositionFrontBack(camera, 1.0);
   }
   if (joystick_report.A_pressed == true) {
     ezp::print_item("JOYSTICK: A");

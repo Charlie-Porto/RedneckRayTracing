@@ -33,18 +33,18 @@ void drawListOfPixels(const std::vector<glm::dvec2>& pixels) {
   pce::render::renderVec2PixelList(sdl_pixels, rcolor, Simulation::renderer);
 }
 
-void drawPixelAtVec2(glm::vec2 pixel) {
+void drawPixelAtVec2(glm::vec2 pixel, const std::vector<int>& color) {
   const glm::vec2 sdl_transform = ConvertCartesianCoordinatesToSDL(pixel);
   // ezp::print_item("drawing pixel at Vec2");
   // vezp::print_dvec2(pixel);
-  drawPixelVec2(sdl_transform, rcolor, Simulation::renderer);
+  drawPixelVec2(sdl_transform, color, Simulation::renderer);
 }
 
-void drawSmallCircleAtVec2(glm::vec2 point) {
+void drawSmallCircleAtVec2(const glm::vec2& point, const std::vector<int>& color) {
   // ezp::print_item("drawing circle at Vec2");
   // vezp::print_dvec2(point);
   const glm::vec2 sdl_transform = ConvertCartesianCoordinatesToSDL(point);
-  drawCircle(sdl_transform.x, sdl_transform.y, 2, rcolor, Simulation::renderer);
+  drawCircle(sdl_transform.x, sdl_transform.y, 2, color, Simulation::renderer);
 }
 
 const std::vector<int> mcolor = {5, 140, 15, 255};

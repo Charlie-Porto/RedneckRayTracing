@@ -71,7 +71,7 @@ public:
   }
 
   void MakeObjectAtLocation(const glm::dvec3& location) {
-    const double new_object_radius = 3.0;
+    const double new_object_radius = 1.0;
     Entity object = control.CreateEntity();
     control.AddComponent(object, pce::Location{
       .position = location
@@ -79,6 +79,29 @@ public:
     control.AddComponent(object, pce::RotatedLocation{});
     control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
     control.AddComponent(object, pce::Radar{});
+    control.AddComponent(object, pce::Surface{
+      .natural_color = {255, 255, 255, 255},
+      .luminosity = 1.0,
+      .superimposed = true
+    });
+    objects_.push_back(object);
+  }
+
+  void MakeMoon() {
+    const double new_object_radius = 14.0;
+    std::vector<int> moon_color = {10, 100, 100, 255};
+    Entity object = control.CreateEntity();
+    control.AddComponent(object, pce::Location{
+      .position = glm::dvec3(50, 50, -50)
+    });
+    control.AddComponent(object, pce::RotatedLocation{});
+    control.AddComponent(object, pce::SphereBody{.radius = new_object_radius});
+    control.AddComponent(object, pce::Radar{});
+    control.AddComponent(object, pce::Surface{
+      .natural_color = moon_color, 
+      .luminosity = 0.0,
+      .superimposed = false
+    });
     objects_.push_back(object);
   }
 

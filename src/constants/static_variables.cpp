@@ -22,7 +22,7 @@ const double pixel_stretch_ratio = 2.0;
 const double distance_camera_to_viewplane = 1.0;
 const double camera_inward_zoom_barrier = 40.0;
 
-const double movement_speed = 5.0;
+const double movement_speed = 20.0;
 const double hop_angle = 1.0;
 
 }
