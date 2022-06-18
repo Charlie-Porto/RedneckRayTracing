@@ -49,9 +49,10 @@ public:
 
   void UpdateCamera() {
     if (camera_.in_origin_focus_mode) {
+      ezp::print_item("CAMERA MODE: ORIGIN FOCUS");
       pce::cam_op::updateCameraPositionOriginFocus(camera_, keyboard_);
-      ezp::print_labeled_item("camera position scalar: ", camera_.pov_scalar);
     } else if (camera_.in_free_roam_mode) {
+      ezp::print_item("CAMERA MODE: FREE ROAM");
       pce::cam_op::updateCameraPositionFreeRoam(camera_, keyboard_);
     }
   }
