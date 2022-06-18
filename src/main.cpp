@@ -117,7 +117,8 @@ int main(int argc, const char * argv[]) {
         double ticks = (SDL_GetTicks()/1000.0);
         camera_system->UpdateCamera();
         object_radar_system->UpdateRadar(camera_system->ProvideCameraPositionScalar(),
-                                         camera_system->ProvideCameraVersor());
+                                         camera_system->ProvideCameraVersor(),
+                                         camera_system->ProvideCameraFocusPosition());
         // ray_trace_system->UpdateRayTrace(camera_system->ProvideCameraPositionScalar());
         ray_trace_system->TraceObjectCenters(camera_system->ProvideCameraPositionScalar());
 

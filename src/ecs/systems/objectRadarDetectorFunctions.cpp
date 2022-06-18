@@ -28,6 +28,12 @@ glm::dvec3 rotateObjectCenterPoint(const glm::dvec3& point, const glm::dquat& ca
   return qfunc::rotateVector3byQuaternion(point, cam_rotation_versor);
 }
 
+glm::dvec3 transformObjectCenterPoint(const glm::dvec3& point, const glm::dvec3& cam_focus_position) {
+  // const glm::dvec3 transformed_point = cam_focus_position - point;
+  const glm::dvec3 transformed_point = point - cam_focus_position;
+  return transformed_point;
+}
+
 
 glm::dvec3 calculatePointWireIntersectsViewPlane(pce::math_objs::LineParametricEquation wire,
                                                  pce::math_objs::Plane viewplane) {
