@@ -4,7 +4,7 @@
 
 /*----------------------------------------------------------------|
 --------------------- Module Description -------------------------|
-to store static consts used in the project
+purpose: to store static consts used in the project
 -----------------------------------------------------------------*/
 
 namespace global_const {

@@ -82,7 +82,7 @@ public:
       auto const& rotated_location = control.GetComponent<pce::RotatedLocation>(entity);
       auto const& radar = control.GetComponent<pce::Radar>(entity);
       std::vector<glm::dvec2> trace_log = {};
-      pce::raytrace::smartCrawlTraceAtPixel(radar, rotated_location.rotated_position,
+      pce::raytrace::smarterCrawlTraceAtPixel(radar, rotated_location.rotated_position,
                                        sphere_body.radius, camera_pos_scalar, trace_log);
             
       ezp::print_labeled_item("*******Trace Log Count *********   ", trace_log.size());

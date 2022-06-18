@@ -44,8 +44,7 @@ glm::dvec3 tracePixel(const pce::Radar radar,
   if (pce::math::checkIfLineVectorFormIntersectsSphere(wire, rotated_position, radius)) {
     // ezp::print_labeled_item("pixel trace log size: ", pixel_trace_log.size());
     return pce::math::calculateClosestPointLineIntersectsSphere(wire, rotated_position, radius);
-  }
-  return glm::dvec3(1000, 1000, 1000);
+  } return glm::dvec3(1000, 1000, 1000);
 }
 
 
@@ -55,6 +54,71 @@ glm::dvec3 getObjectWireIntersection(const pce::math_objs::LineVectorForm& wire,
 }
 
 
+void smarterCrawlTraceAtPixel(const pce::Radar radar,
+                              const glm::dvec3& rotated_position,
+                              double radius,
+                              const double camera_pos_scalar,
+                              std::vector<glm::dvec2>& pixel_trace_log) {
+  const glm::dvec3 original_hit = tracePixel(radar, rotated_position, radius, camera_pos_scalar);
+  if (original_hit != glm::dvec3(1000, 1000, 1000)) {
+    // glm::dvec2 recalculated_pixel = pce::pix_map::convertPointOnViewSphereToPixel(original_hit, glm::dvec3(0, 0, camera_pos_scalar));
+    pixel_trace_log.push_back(radar.hitpoint_corresponding_pixel);
+    const std::vector<glm::dvec2> crawl_pixels = {
+      glm::dvec2(0, 1),
+      glm::dvec2(0, -1),
+      glm::dvec2(1, 0),
+      glm::dvec2(-1, 0)
+    };
+    
+    for (auto const& crawl_pixel : crawl_pixels) {
+      glm::dvec2 prev_pixel = radar.hitpoint_corresponding_pixel;
+      std::vector<glm::dvec2> hit_pixels;
+      // perform crawl along straight line
+      while (true) {
+        glm::dvec2 current_pixel = prev_pixel + crawl_pixel;
+        prev_pixel = current_pixel;
+        glm::dvec3 new_hitpoint = pce::pix_map::convertPixelToPointOnViewSphere(current_pixel, glm::dvec3(0, 0, camera_pos_scalar));
+        auto new_radar = pce::Radar{
+          .view_sphere_hitpoint = new_hitpoint,
+          .hitpoint_corresponding_pixel = current_pixel
+        };
+        const glm::dvec3 new_hit = tracePixel(new_radar, rotated_position, radius, camera_pos_scalar);
+        if (new_hit != glm::dvec3(1000, 1000, 1000)) {
+          hit_pixels.push_back(current_pixel);
+        } else {
+          break;
+        }
+      }
+      glm::dvec2 orthogonal_crawl_pixel = glm::dvec2(crawl_pixel.y, -crawl_pixel.x);
+      for (auto const& hit_pixel : hit_pixels) {
+        std::vector<glm::dvec2> sub_hit_pixels;
+        glm::dvec2 sub_prev_pixel = hit_pixel;
+        // int i = 1;
+        // while (i < 3) {
+        //   glm::dvec2 current_pixel = sub_prev_pixel + orthogonal_crawl_pixel;
+        //   sub_prev_pixel = current_pixel;
+        //   glm::dvec3 new_hitpoint = pce::pix_map::convertPixelToPointOnViewSphere(current_pixel, glm::dvec3(0, 0, camera_pos_scalar));
+        //   auto new_radar = pce::Radar{
+        //     .view_sphere_hitpoint = new_hitpoint,
+        //     .hitpoint_corresponding_pixel = current_pixel
+        //   };
+        //   const glm::dvec3 new_hit = tracePixel(new_radar, rotated_position, radius, camera_pos_scalar);
+        //   if (new_hit != glm::dvec3(1000, 1000, 1000)) {
+        //     // sub_hit_pixels.push_back(current_pixel);
+        //     hit_pixels.push_back(current_pixel);
+        //   } else {
+        //     break;
+        //     // hit_pixels.insert(hit_pixels.end(), sub_hit_pixels.begin(), sub_hit_pixels.end());
+        //   }
+        //   ++i;
+        // }
+      }
+      pixel_trace_log.insert(pixel_trace_log.end(), hit_pixels.begin(), hit_pixels.end());
+    }
+
+  }
+}
+// warning: this function is very slow
 void smartCrawlTraceAtPixel(const pce::Radar radar,
                             const glm::dvec3& rotated_position,
                             double radius,
@@ -63,7 +127,6 @@ void smartCrawlTraceAtPixel(const pce::Radar radar,
 
   // pixel_trace_log.push_back(radar.hitpoint_corresponding_pixel);
   const glm::dvec3 original_hit = tracePixel(radar, rotated_position, radius, camera_pos_scalar);
-
   if (original_hit != glm::dvec3(1000, 1000, 1000)) {
     glm::dvec2 recalculated_pixel = pce::pix_map::convertPointOnViewSphereToPixel(original_hit, glm::dvec3(0, 0, camera_pos_scalar));
     pixel_trace_log.push_back(recalculated_pixel);
@@ -98,90 +161,6 @@ void smartCrawlTraceAtPixel(const pce::Radar radar,
     }
   }
 }
-
-// void miniCrawlTraceAtPixel(const pce::Radar radar,
-//                           const glm::dvec3& rotated_position,
-//                           double radius,
-//                           const double camera_pos_scalar,
-//                           std::vector<glm::dvec2>& pixel_trace_log) {
-//   ezp::print_item("calling miniCrawlTraceAtPixel for pixel: ");
-//   vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
-//   // if (std::count(pixel_trace_log.begin(), pixel_trace_log.end(), radar.hitpoint_corresponding_pixel) == 0) {
-//     const glm::dvec3 if_hit = tracePixel(radar, rotated_position, radius, camera_pos_scalar);
-
-//     if (if_hit != glm::dvec3(1000, 1000, 1000)) {
-//       pixel_trace_log.push_back(radar.hitpoint_corresponding_pixel);
-//       // then we trace neighbors
-//       const std::vector<glm::dvec2> next_pixels = {
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x, radar.hitpoint_corresponding_pixel.y+1.0),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x, radar.hitpoint_corresponding_pixel.y-1.0),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x+1.0, radar.hitpoint_corresponding_pixel.y),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x-1.0, radar.hitpoint_corresponding_pixel.y),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x+1.0, radar.hitpoint_corresponding_pixel.y+1.0),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x+1.0, radar.hitpoint_corresponding_pixel.y-1.0),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x-1.0, radar.hitpoint_corresponding_pixel.y+1.0),
-//         glm::dvec2(radar.hitpoint_corresponding_pixel.x-1.0, radar.hitpoint_corresponding_pixel.y-1.0),
-//       };
-//       for (auto const& npixel : next_pixels) {
-//         glm::dvec3 new_hitpoint = pce::pix_map::convertPixelToPointOnViewSphere(npixel, glm::dvec3(0, 0, camera_pos_scalar));
-//         auto new_radar = pce::Radar{
-//           .view_sphere_hitpoint = new_hitpoint,
-//           .hitpoint_corresponding_pixel = npixel
-//         };
-//         const glm::dvec3 hitpoint = tracePixel(new_radar, rotated_position, radius, camera_pos_scalar);
-//         if (hitpoint != glm::dvec3(1000, 1000, 1000)) {
-//           pixel_trace_log.push_back(npixel);
-//         }
-//       }
-//     }
-//   // } 
-// }
-
-
-// void crawlTraceAtPixel(const pce::Radar radar,
-//                        const glm::dvec3& rotated_position,
-//                        double radius,
-//                        const double camera_pos_scalar,
-//                        std::vector<glm::dvec2>& pixel_trace_log) {
-
-//   /* verify that pixel has not yet been traced to avoid rework */
-//   if (std::count(pixel_trace_log.begin(), pixel_trace_log.end(), radar.hitpoint_corresponding_pixel) == 0) {
-//     ezp::print_item("confirmed: pixel not yet in log");
-//     // trace this pixel and determine if hit
-//     const glm::dvec3 if_hit = tracePixel(radar, rotated_position, radius, camera_pos_scalar);
-//       // ezp::print_item("tracing pixel: ");
-//       // vezp::print_dvec2(radar.hitpoint_corresponding_pixel);
-      
-//     if (if_hit != glm::dvec3(1000, 1000, camera_pos_scalar)) {
-//       std::vector<double> signs = {0.0, 1.0, -1.0};
-//       for (int i = 0; i < 3; ++i) {
-//         for (int j = 2; j > -1; --j) {
-//           const double new_pixel_x = radar.hitpoint_corresponding_pixel.x + signs[i];
-//           const double new_pixel_y = radar.hitpoint_corresponding_pixel.y + signs[j];
-//           auto const new_pixel = glm::dvec2(new_pixel_x, new_pixel_y);
-
-//           if (std::count(pixel_trace_log.begin(), pixel_trace_log.end(), new_pixel) == 0
-//               && abs(new_pixel.x) < global_const::screen_x
-//               && abs(new_pixel.y) < global_const::screen_y) {
-              
-//               glm::dvec3 new_hitpoint = pce::pix_map::convertPixelToPointOnViewSphere(new_pixel, glm::dvec3(0, 0, camera_pos_scalar));
-//             // glm::dvec3 new_hitpoint = pce::pix_map::calculateHorizontalNeighborPixelVec3(
-//             //                             radar.view_sphere_hitpoint, signs[i]);
-//             // new_hitpoint = pce::pix_map::calculateVerticalNeighborPixelVec3(
-//             //                             radar.view_sphere_hitpoint, signs[j]);
-//             auto new_radar = pce::Radar{
-//               .view_sphere_hitpoint = new_hitpoint,
-//               .hitpoint_corresponding_pixel = new_pixel
-//             };
-//             ezp::print_item("crawl tracing pixel");
-//             vezp::print_dvec2(new_pixel);
-//             crawlTraceAtPixel(new_radar, rotated_position, radius, camera_pos_scalar, pixel_trace_log);
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 
 }
 }

@@ -88,7 +88,7 @@ public:
   }
 
   void MakeMoon() {
-    const double new_object_radius = 14.0;
+    const double new_object_radius = 5.0;
     std::vector<int> moon_color = {10, 100, 100, 255};
     Entity object = control.CreateEntity();
     control.AddComponent(object, pce::Location{
